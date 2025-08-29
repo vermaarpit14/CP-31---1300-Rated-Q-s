@@ -37,17 +37,22 @@ int32_t main() {
     //code here
     int t; cin>>t;
     while(t--){
-        int n, x, y;
-        cin>>n>>x>>y;
-        vector<int> a(n);
+        int n; cin>>n;
+        vector<int> a(n), b(n);
         rep(i, 0, n) cin>>a[i];
-        map<pair<int, int>, int> mp;
-        int ans = 0;
-        rep(i, 0, n){
-            ans += mp[{(x-a[i]%x)%x, a[i]%y}];
-            mp[{(a[i]%x)%x, a[i]%y}] += 1;
+        b[0] = -1;
+        rep(i, 1, n) {
+            if(a[i-1] != a[i]) b[i] = i-1;
+            else b[i] = b[i-1];
         }
-        cout<<ans<<"\n";
+        int q; cin>>q;
+        while(q--){
+            int l, r;
+            cin>>l>>r;
+            if(l-1 <= b[r-1]) cout<< b[r-1]+1 <<" "<<r<<"\n";
+            else cout<< -1 <<" "<< - 1 <<"\n";
+        }
+        cout<<"\n";
     }
     return 0;
 }
