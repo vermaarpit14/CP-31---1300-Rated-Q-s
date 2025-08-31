@@ -16,7 +16,7 @@ using namespace std;
 #define each(x, a) for (auto &x : a)
 
 const int INF = 1e18;
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 
 vector<bool> sieve(int n) {
     vector<bool> isPrime(n + 1, true);
@@ -31,36 +31,30 @@ vector<bool> sieve(int n) {
 }
 /************************************************************************************/
 
-int f(int n){
-    int fact = 1;
-    rep(i, 1, n+1) fact = (fact * i)%MOD;
-    return fact;
-}
-
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     //code here
     int t; cin>>t;
     while(t--){
-        string s; cin>>s;
-        int n = s.length();
-        int cnt = 1, ans = 1, k = 1;
-        char ch = s[0];
-        rep(i, 1, n){
-            if(s[i] == ch){
-                cnt += 1;
-            } else if(s[i] != ch){
-                ans = (ans * cnt)%MOD;
-                cnt = 1;
-                k += 1;
-                ch = s[i];
-            }
+        int n; cin>>n;
+        vector<int> a(n), b(n);
+        vector<pair<int, int>> c(n);
+        rep(i, 0, n) cin>>a[i];
+        int mx = INT_MIN;
+        rep(i, 0, n) {
+            cin>>b[i];
+            c[i] = {a[i]-b[i], i+1};
+            mx = max(mx, a[i]-b[i]);
         }
-        ans = (ans * cnt)%MOD;
-        int fact = f(n-k);
-        ans = (ans * fact)%MOD;
-        cout<<(n-k)<<" "<<ans<<"\n";
+        vector<int> ans;
+        rep(i, 0, n){
+            if(c[i].ff == mx) ans.pb(c[i].ss);
+        }        
+        sort(all(ans));
+        cout<<ans.size()<<"\n";
+        each(x, ans) cout<<x<<" ";
+        cout<<"\n";
     }
     return 0;
 }

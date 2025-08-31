@@ -16,7 +16,7 @@ using namespace std;
 #define each(x, a) for (auto &x : a)
 
 const int INF = 1e18;
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 
 vector<bool> sieve(int n) {
     vector<bool> isPrime(n + 1, true);
@@ -31,10 +31,8 @@ vector<bool> sieve(int n) {
 }
 /************************************************************************************/
 
-int f(int n){
-    int fact = 1;
-    rep(i, 1, n+1) fact = (fact * i)%MOD;
-    return fact;
+int gpSum(int r, int n){
+    return (1 - (pow(r, n)))/(1 - r);
 }
 
 int32_t main() {
@@ -43,24 +41,20 @@ int32_t main() {
     //code here
     int t; cin>>t;
     while(t--){
-        string s; cin>>s;
-        int n = s.length();
-        int cnt = 1, ans = 1, k = 1;
-        char ch = s[0];
-        rep(i, 1, n){
-            if(s[i] == ch){
-                cnt += 1;
-            } else if(s[i] != ch){
-                ans = (ans * cnt)%MOD;
-                cnt = 1;
-                k += 1;
-                ch = s[i];
+        int n; cin>>n;
+        bool ans = false;
+        for(int k=2 ; ; k++){
+            for(int i=3 ; ; i++){
+                int gp_sum = gpSum(k, i);
+                if(gp_sum > n) break;
+                if(gp_sum == n){
+                    ans = true;
+                    break;
+                }
             }
+            if(gpSum(k, 3) > n) break;
         }
-        ans = (ans * cnt)%MOD;
-        int fact = f(n-k);
-        ans = (ans * fact)%MOD;
-        cout<<(n-k)<<" "<<ans<<"\n";
+        cout<<(ans ? "YES" : "NO")<<"\n";
     }
     return 0;
 }
